@@ -6,6 +6,7 @@ A serverless-friendly Next.js app that discovers games on Steam category and sal
 
 ```bash
 npm install
+npx playwright install chromium
 npm run dev
 ```
 
@@ -13,11 +14,11 @@ Open http://localhost:3000. Node.js 18.18 or newer is required.
 
 ## Architecture
 
-1. `POST /api/steam/discover` validates and fetches an HTTPS Steam category or sale URL, then extracts unique app IDs from HTML attributes, links, and embedded JSON.
+1. `POST /api/steam/discover` validates and fetches an HTTPS Steam category or sale URL, then extracts unique app IDs from HTML attributes, links, and embedded JSON. If Steam's initial response contains no games, Playwright renders the page in headless Chromium and discovery retries against the resulting DOM.
 2. The browser divides IDs into batches of 20 and calls `POST /api/steam/enrich`. The endpoint accepts at most 25 IDs and combines Steam App Details with Review Summary data.
 3. Filtering, sorting, and file generation happen in the browser. Nothing is written to disk.
 
-Both API routes explicitly use the Node.js runtime, disable caching, impose upstream timeouts, and fit Vercel's stateless request model. A browser fallback is intentionally not required: supported Steam pages expose identifiers in their response markup and the public JSON endpoints provide enrichment.
+Both API routes explicitly use the Node.js runtime, disable caching, and impose upstream timeouts. The browser fallback requires a Chromium installation in the deployment environment; set `PLAYWRIGHT_BROWSERS_PATH` while installing Chromium if your host needs the browser stored in a specific location.
 
 ## API
 

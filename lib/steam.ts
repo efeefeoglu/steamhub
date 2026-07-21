@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import type { Game } from './schemas';
+import { renderSteamPage } from './playwright';
 
 // Steam's store front occasionally rejects non-browser user agents at its edge. The
 // API endpoints do not need a logged-in session, but using the same headers as a
@@ -47,7 +48,14 @@ export async function discover(rawUrl: string, country: string, language: string
   }
   if (!response) throw new Error(`Steam could not be reached during discovery${failure instanceof Error ? `: ${failure.message}` : '.'}`);
   if (!response.ok) throw new Error(`Steam returned ${response.status} during discovery.`);
-  const apps = extractApps(await response.text());
+  let apps = extractApps(await response.text());
+  if (!apps.length) {
+    try {
+      apps = extractApps(await renderSteamPage(url));
+    } catch (error) {
+      throw new Error(`Steam's event page required browser rendering, but Playwright failed: ${error instanceof Error ? error.message : 'Unknown browser error.'}`);
+    }
+  }
   if (!apps.length) throw new Error('No games were found. Steam may be rate-limiting this request or the page may be unsupported.');
   return { games: apps.slice(0, max), total: Math.min(apps.length, max), truncated: apps.length > max };
 }
