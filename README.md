@@ -6,7 +6,6 @@ A serverless-friendly Next.js app that discovers games on Steam category and sal
 
 ```bash
 npm install
-npx playwright install chromium
 npm run dev
 ```
 
@@ -18,7 +17,7 @@ Open http://localhost:3000. Node.js 18.18 or newer is required.
 2. The browser divides IDs into batches of 20 and calls `POST /api/steam/enrich`. The endpoint accepts at most 25 IDs and combines Steam App Details with Review Summary data.
 3. Filtering, sorting, and file generation happen in the browser. Nothing is written to disk.
 
-Both API routes explicitly use the Node.js runtime, disable caching, and impose upstream timeouts. The browser fallback requires a Chromium installation in the deployment environment; set `PLAYWRIGHT_BROWSERS_PATH` while installing Chromium if your host needs the browser stored in a specific location.
+Both API routes explicitly use the Node.js runtime, disable caching, and impose upstream timeouts. The `postinstall` script downloads Chromium into Playwright's package directory so it remains available when a deployment build and its serverless runtime use different home directories. Set `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` only when the runtime supplies its own compatible browser.
 
 ## API
 
@@ -38,4 +37,4 @@ POST /api/steam/enrich
 
 ## Deploy
 
-Import this repository into Vercel. The framework and build command are detected automatically; no environment variables or persistent storage are required.
+Import this repository into Vercel. The framework and build command are detected automatically; no environment variables or persistent storage are required. Deployment platforms must permit the Chromium download during dependency installation and have enough artifact space for the browser.
