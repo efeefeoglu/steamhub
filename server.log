@@ -1,0 +1,19 @@
+INFO:     Started server process [73494]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:3000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54700 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54700 - "GET /style.css HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54708 - "GET /script.js HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54708 - "GET /?url=https%3A%2F%2Fstore.steampowered.com%2Fcategory%2Ftrains&cc=tr&max-games=5&include-free=on HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54708 - "GET /style.css HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54700 - "GET /script.js HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56336 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56336 - "GET /public/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56352 - "GET /public/script.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56352 - "POST /api/extract HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56352 - "POST /api/details HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [73494]
