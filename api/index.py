@@ -13,12 +13,18 @@ from fastapi.responses import FileResponse
 
 app = FastAPI()
 
+import os
+
 # Mount public directory for static files in development
-app.mount("/public", StaticFiles(directory="public"), name="public")
+# Note: In Vercel serverless functions, the public directory might not be present alongside the API.
+if os.path.isdir("public"):
+    app.mount("/public", StaticFiles(directory="public"), name="public")
 
 @app.get("/")
 def read_root():
-    return FileResponse("public/index.html")
+    if os.path.isfile("public/index.html"):
+        return FileResponse("public/index.html")
+    return {"status": "Frontend served via Vercel Edge Network"}
 
 app.add_middleware(
     CORSMiddleware,
