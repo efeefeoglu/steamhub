@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam Sale Explorer</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Steam Sale Explorer</h1>
+            <p>Extract and analyze games from any Steam category or sale event page.</p>
+        </header>
+
+        <section class="config-panel">
+            <form id="extract-form">
+                <div class="form-group">
+                    <label for="url">Steam Store URL</label>
+                    <input type="url" id="url" name="url" placeholder="https://store.steampowered.com/category/trains" required>
+                </div>
+
+                <div class="options-grid">
+                    <div class="form-group">
+                        <label for="cc">Pricing Region (Country Code)</label>
+                        <input type="text" id="cc" name="cc" value="tr" maxlength="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="max-games">Max Games to Fetch</label>
+                        <input type="number" id="max-games" name="max-games" value="100" min="1" max="1000">
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="include-dlc" name="include-dlc">
+                        <label for="include-dlc">Include DLCs</label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="include-free" name="include-free" checked>
+                        <label for="include-free">Include Free Games</label>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" id="btn-start" class="btn primary">Start Collection</button>
+                    <button type="button" id="btn-cancel" class="btn danger hidden">Cancel</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="progress-section" class="hidden">
+            <div class="progress-status" id="progress-status">Initializing...</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </section>
+
+        <section id="results-section" class="hidden">
+            <div class="toolbar">
+                <div class="filters">
+                    <label>Filter:</label>
+                    <input type="number" id="min-discount" placeholder="Min Discount %" min="0" max="100">
+                    <input type="number" id="min-rating" placeholder="Min Rating %" min="0" max="100">
+                    <input type="number" id="min-reviews" placeholder="Min Reviews" min="0">
+                </div>
+                <div class="sort-export">
+                    <label>Sort:</label>
+                    <select id="sort-by">
+                        <option value="discount">Discount (High to Low)</option>
+                        <option value="rating">Rating (High to Low)</option>
+                        <option value="reviews">Reviews (High to Low)</option>
+                        <option value="price">Price (Low to High)</option>
+                        <option value="name">Name (A-Z)</option>
+                    </select>
+                    <button id="btn-export" class="btn secondary">Export JSON</button>
+                </div>
+            </div>
+
+            <div id="games-grid" class="games-grid">
+                <!-- Games will be injected here -->
+            </div>
+
+            <div id="empty-state" class="empty-state hidden">
+                <p>No games match the current filters.</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="/public/script.js"></script>
+</body>
+</html>
