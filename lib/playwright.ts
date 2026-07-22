@@ -1,15 +1,16 @@
 const NAVIGATION_TIMEOUT_MS = 20_000;
 
-// Keep the browser beside the Playwright package instead of in the installing
-// user's home directory. Build and runtime users frequently differ on serverless
-// hosts, which otherwise makes a browser downloaded during `npm install`
-// invisible when the function starts.
-process.env.PLAYWRIGHT_BROWSERS_PATH ??= '0';
-
 /** Render a Steam page when its initial response does not contain app capsules. */
 export async function renderSteamPage(url: URL) {
-  const { chromium } = await import('playwright');
-  const browser = await chromium.launch({ headless: true });
+  const [{ default: serverlessChromium }, { chromium }] = await Promise.all([
+    import('@sparticuz/chromium'),
+    import('playwright-core'),
+  ]);
+  const browser = await chromium.launch({
+    args: serverlessChromium.args,
+    executablePath: await serverlessChromium.executablePath(),
+    headless: true,
+  });
 
   try {
     const context = await browser.newContext({
