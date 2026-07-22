@@ -1,4 +1,0 @@
-@tailwind base; @tailwind components; @tailwind utilities;
-:root { color-scheme: dark; } * { box-sizing: border-box; } body { margin: 0; background: #07111f; color: #eaf3ff; font-family: ui-sans-serif, system-ui, sans-serif; }
-body:before { content:""; position:fixed; inset:0; pointer-events:none; background: radial-gradient(circle at 8% 5%,rgba(83,216,251,.12),transparent 32%),radial-gradient(circle at 90% 25%,rgba(185,245,124,.07),transparent 24%); }
-@layer components { .field { @apply w-full rounded-xl border border-white/10 bg-ink/70 px-3.5 py-3 text-sm text-white outline-none transition focus:border-cyan/70 focus:ring-2 focus:ring-cyan/10; } .label { @apply mb-2 block text-[11px] font-bold uppercase tracking-[.16em] text-slate-400; } .card { @apply rounded-2xl border border-white/10 bg-panel/80 shadow-glow backdrop-blur; } }
